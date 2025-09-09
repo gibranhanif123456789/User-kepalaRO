@@ -8,6 +8,10 @@ class JenisBarang extends Model
 {
     protected $fillable = ['jenis'];
 
+    protected $table = 'jenis_barang';
+
+    public $timestamps = false;
+
     public function listBarang()
     {
         return $this->hasMany(ListBarang::class, 'jenis_id');
