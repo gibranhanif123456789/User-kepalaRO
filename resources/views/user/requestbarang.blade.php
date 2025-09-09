@@ -15,6 +15,39 @@
         </div>
     @endif
 
+    <!-- Filter -->
+<form method="GET" action="{{ route('request.barang.index') }}" class="mb-4 flex flex-wrap gap-3 items-end">
+    <!-- Status -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Status</label>
+        <select name="status" class="border-gray-300 rounded-md shadow-sm text-sm">
+            <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>Semua</option>
+            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+            <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
+            <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+        </select>
+    </div>
+
+    <!-- Range Tanggal -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Dari</label>
+        <input type="date" name="start_date" value="{{ request('start_date') }}" 
+               class="border-gray-300 rounded-md shadow-sm text-sm">
+    </div>
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Sampai</label>
+        <input type="date" name="end_date" value="{{ request('end_date') }}" 
+               class="border-gray-300 rounded-md shadow-sm text-sm">
+    </div>
+
+    <!-- Tombol Filter -->
+    <div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+            <i class="fas fa-filter me-1"></i> Filter
+        </button>
+    </div>
+</form>
+
     <!-- Default: Tampilkan History -->
     <div id="history-section" class="bg-white shadow rounded-lg p-6 max-w-5xl mx-auto">
         <h4 class="text-xl font-bold mb-4 flex items-center text-gray-800">

@@ -11,15 +11,28 @@ class PermintaanController extends Controller
     /**
      * Tampilkan list permintaan user yang sedang login
      */
-    public function index()
-    {
-        $permintaans = Permintaan::with(['user', 'details'])
-            ->where('user_id', Auth::id())
-            ->orderBy('id', 'desc')
-            ->get();
+   public function index(Request $request)
+{
+    $query = Permintaan::with(['user', 'details'])
+        ->where('user_id', Auth::id());
 
-        return view('user.requestbarang', compact('permintaans'));
+    // Filter berdasarkan status
+    if ($request->filled('status') && $request->status !== 'all') {
+        $query->where('status', $request->status);
     }
+
+    // Filter berdasarkan tanggal
+    if ($request->filled('start_date') && $request->filled('end_date')) {
+        $query->whereBetween('tanggal_permintaan', [
+            $request->start_date,
+            $request->end_date
+        ]);
+    }
+
+    $permintaans = $query->orderBy('tanggal_permintaan', 'desc')->get();
+
+    return view('user.requestbarang', compact('permintaans'));
+}
 
     /**
      * Simpan permintaan baru

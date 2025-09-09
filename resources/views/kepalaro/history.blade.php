@@ -12,6 +12,47 @@
         this.showDetailModal = true;
     }
 }">
+<div class="py-8 px-6">
+    <h2 class="text-2xl font-semibold mb-6 text-gray-800">Histori Permintaan</h2>
+
+    <!-- Filter Form -->
+    <form method="GET" action="{{ route('kepalaro.history') }}" class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg">
+        <!-- Status -->
+        <div>
+            <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <select name="status" id="status" class="w-full border-gray-300 rounded-lg">
+                <option value="all" {{ ($filters['status'] ?? '') == 'all' ? 'selected' : '' }}>Semua</option>
+                <option value="pending" {{ ($filters['status'] ?? '') == 'pending' ? 'selected' : '' }}>Pending</option>
+                <option value="diterima" {{ ($filters['status'] ?? '') == 'diterima' ? 'selected' : '' }}>Diterima</option>
+                <option value="ditolak" {{ ($filters['status'] ?? '') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+            </select>
+        </div>
+
+        <!-- Dari tanggal -->
+        <div>
+            <label for="date_from" class="block text-sm font-medium text-gray-700 mb-1">Dari Tanggal</label>
+            <input type="date" name="date_from" id="date_from"
+                   value="{{ $filters['date_from'] ?? '' }}"
+                   class="w-full border-gray-300 rounded-lg">
+        </div>
+
+        <!-- Sampai tanggal -->
+        <div>
+            <label for="date_to" class="block text-sm font-medium text-gray-700 mb-1">Sampai Tanggal</label>
+            <input type="date" name="date_to" id="date_to"
+                   value="{{ $filters['date_to'] ?? '' }}"
+                   class="w-full border-gray-300 rounded-lg">
+        </div>
+
+        <!-- Tombol -->
+        <div class="flex items-end gap-2">
+            <button type="submit"
+                class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Filter</button>
+            <a href="{{ route('kepalaro.history') }}"
+                class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400">Reset</a>
+        </div>
+    </form>
+
 
     <div class="py-8 px-6">
         <h2 class="text-2xl font-semibold mb-6 text-gray-800">Histori Permintaan</h2>

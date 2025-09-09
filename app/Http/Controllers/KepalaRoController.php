@@ -24,19 +24,34 @@ class KepalaROController extends Controller
     }
 
     // History: Semua permintaan (disetujui/ditolak)
-    public function history()
-    {
-        $user = Auth::user();
+  public function history(Request $request)
+{
+    $user = Auth::user();
 
-        $requests = Permintaan::with(['user', 'details'])
-            ->whereIn('status', ['diterima', 'ditolak'])
-            ->whereHas('user', function($q) use ($user) {
-                $q->where('region', $user->region);
-            })
-            ->get();
+    $query = Permintaan::with(['user', 'details'])
+        ->whereHas('user', function($q) use ($user) {
+            $q->where('region', $user->region);
+        });
 
-        return view('kepalaro.history', compact('requests'));
+    // Filter status
+    if ($request->filled('status') && $request->status !== 'all') {
+        $query->where('status', $request->status);
     }
+
+    // Filter tanggal (created_at atau tanggal_permintaan)
+    if ($request->filled('date_from') && $request->filled('date_to')) {
+        $query->whereBetween('tanggal_permintaan', [
+            $request->date_from,
+            $request->date_to
+        ]);
+    }
+
+   $requests = $query->orderByDesc('tanggal_permintaan')->get();
+
+
+    return view('kepalaro.history', compact('requests'))
+        ->with('filters', $request->only(['status', 'date_from', 'date_to']));
+}
 
     // Approve permintaan
     public function approve($id)
