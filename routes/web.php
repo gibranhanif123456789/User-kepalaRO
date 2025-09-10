@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PermintaanController;
 use App\Http\Controllers\SuperadminController;
 use App\Http\Controllers\KepalaROController;
+use App\Http\Controllers\ProfileController;
 
 // =====================
 // DEFAULT ROUTE
@@ -94,3 +95,6 @@ Route::prefix('requestbarang')
         Route::get('/{tiket}', 'getDetail')->name('detail');
         Route::post('/', 'store')->name('store');
     });
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+});
